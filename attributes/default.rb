@@ -31,7 +31,7 @@ default.solr.source 	= "http://archive.apache.org/dist/lucene/apache-solr/#{node
 default.solr.user		= node[:jetty][:user]
 default.solr.group		= node[:jetty][:group]
 default.solr.home 		= '/usr/share/solr'
-default.solr.lib		= '/var/lib/solr'
+default.solr.lib_dir	= '/var/lib/solr'
 default.solr.log_dir	= '/var/log/solr'
 default.solr.nodes		= ["solr"]
 
