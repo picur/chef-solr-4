@@ -84,7 +84,7 @@ link "#{node[:solr][:home]}/WEB-INF/lib/mysql-connector-java.jar" do
 	only_if { node[:solr][:mysql_connector_enable] }
 end
 
-node[:solr][:cores].each do |core_name|
+node[:solr][:nodes].each do |core_name|
 
 	bash "create_core_dir" do
 		user "root"
