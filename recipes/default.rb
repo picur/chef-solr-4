@@ -105,7 +105,7 @@ node[:solr][:nodes].each do |core_name|
 		variables({
 			:node_name => core_name	
 		})
-		notifies :reload, resources(:service => 'jetty'), :delayed
+		notifies :restart, resources(:service => 'jetty'), :delayed
 	end
 
 end
