@@ -24,7 +24,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-define :solr_core, :template => "solr_xml.erb" do
+define :solr_core, :template => "solr_xml.erb", :action => :create do
 
 	core_name = params[:name]
 

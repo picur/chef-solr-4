@@ -83,3 +83,31 @@ link "#{node[:solr][:home]}/WEB-INF/lib/mysql-connector-java.jar" do
 	to "/usr/share/java/mysql-connector-java.jar"
 	only_if { node[:solr][:mysql_connector_enable] }
 end
+
+node[:solr][:cores].each do |core_name|
+
+	bash "create_core_dir" do
+		user "root"
+		code <<-EOH
+			mkdir -p #{node[:solr][:home]}/#{core_name}
+			mkdir -p #{node[:solr][:lib_dir]}/#{core_name}/data
+			cp -R #{node[:solr][:extract_path]}/example/solr/collection1/conf #{node[:solr][:home]}/#{core_name}
+			chown -R #{node[:solr][:user]}:#{node[:solr][:group]} #{node[:solr][:lib_dir]}
+			chown -R #{node[:solr][:user]}:#{node[:solr][:group]} #{node[:solr][:home]}
+			EOH
+	end
+
+	template "#{node[:solr][:home]}/solr.xml" do
+		source "solr_xml.erb"
+		user node[:solr][:user]
+		group node[:solr][:group]
+		mode 0755
+		variables({
+			:node_name => core_name	
+		})
+		if ::File_exists?("#{node[:solr][:home]}/solr.xml")
+			notifies :reload, resources(:service => 'jetty'), :delayed
+		end
+	end
+
+end

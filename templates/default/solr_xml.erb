@@ -1,5 +1,5 @@
 <solr persistent="true">
 	<cores adminPath="/admin/cores">
-		<core name="sitename" instanceDir="sitename" dataDir="#{node[:solr][:lib_dir]}/#{node_name}/data" />
+		<core name="<%= node_name %>" instanceDir="<%= node_name %>" dataDir="<%= node[:solr][:lib_dir] %>/<%= node_name %>/data" />
 	</cores>
 </solr>
