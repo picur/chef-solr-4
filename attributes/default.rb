@@ -34,8 +34,8 @@ default.solr.home 		= '/usr/share/solr'
 default.solr.lib		= '/var/lib/solr'
 default.solr.log_dir	= '/var/log/solr'
 
-default.solr_archive 	= "#{Chef::Config[:file_cache_path]}/apache-solr-#{node[:solr][:version]}.tgz"
-default.extract_path 	= "#{Chef::Config[:file_cache_path]}/apache-solr-#{node[:solr][:version]}"
+default.solr.archive 		= "#{Chef::Config[:file_cache_path]}/apache-solr-#{node[:solr][:version]}.tgz"
+default.solr.extract_path 	= "#{Chef::Config[:file_cache_path]}/apache-solr-#{node[:solr][:version]}"
 
 default.solr.mysql_connector_enable = true
 

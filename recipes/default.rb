@@ -32,18 +32,18 @@ node[:packages].each do |pkg|
 end
 
 # download solr source
-remote_file node[:solr][:solr_archive] do
+remote_file node[:solr][:archive] do
 	source node[:solr][:source]
 	mode "0744"
 	not_if { ::File.directory?(node[:solr][:home]) }
 end
 
 # extract solr archive
-execute 'extract_solr_archive' do
-	cwd ::File.dirname(node[:solr][:solr_archive])
-	command "tar -xzvf #{node[:solr][:solr_archive]}"
+execute 'extract_archive' do
+	cwd ::File.dirname(node[:solr][:archive])
+	command "tar -xzvf #{node[:solr][:archive]}"
 	not_if { ::File.exists?(node[:solr][:extract_path]) }
-	only_if { ::File.exists?(node[:solr][:solr_archive]) }
+	only_if { ::File.exists?(node[:solr][:archive]) }
 end
 
 # create solr home
@@ -54,7 +54,7 @@ end
 
 # create log dir
 directory node[:solr][:log_dir] do 
-	user node[:solr][:user]
+	user node[:solr][:user]	
 	mode "0755"
 end
 
