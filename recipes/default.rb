@@ -27,7 +27,7 @@
 include_recipe 'jetty'
 
 # install default packages
-node[:packages].each do |pkg|
+node[:solr][:packages].each do |pkg|
 	package pkg
 end
 

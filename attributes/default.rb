@@ -27,7 +27,7 @@
 
 # defines default solr settings
 default.solr.version 	= '4.4.0'
-default.solr.source 	= "http://archive.apache.org/dist/lucene/solr/#{node[:solr][:version]}/solr-#{node[:solr][:version]}.tgz"
+default.solr.source 	= "http://archive.apache.org/dist/lucene/apache-solr/#{node[:solr][:version]}/solr-#{node[:solr][:version]}.tgz"
 default.solr.user		= node[:jetty][:user]
 default.solr.group		= node[:jetty][:group]
 default.solr.home 		= '/usr/share/solr'
@@ -40,7 +40,7 @@ default.solr.extract_path 	= "#{Chef::Config[:file_cache_path]}/apache-solr-#{no
 default.solr.mysql_connector_enable = true
 
 # defines OS default packages
-default.packages		= %w(unzip)
+default.solr.packages		= %w(unzip)
 
 # defines jetty options default
 default.jetty.port			= 8000
