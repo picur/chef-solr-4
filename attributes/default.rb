@@ -33,7 +33,7 @@ default.solr.group		= node[:jetty][:group]
 default.solr.home 		= '/usr/share/solr'
 default.solr.lib		= '/var/lib/solr'
 default.solr.log_dir	= '/var/log/solr'
-defailt.solr.nodes		= ["solr"]
+default.solr.nodes		= ["solr"]
 
 default.solr.archive 		= "#{Chef::Config[:file_cache_path]}/apache-solr-#{node[:solr][:version]}.tgz"
 default.solr.extract_path 	= "#{Chef::Config[:file_cache_path]}/solr-#{node[:solr][:version]}"
