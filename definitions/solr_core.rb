@@ -24,25 +24,32 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
+define :solr_core, :action => :create do
 
-# defines default solr settings
-default.solr.version 	= '4.4.0'
-default.solr.source 	= "http://mirrors.hostingromania.ro/apache.org/lucene/solr/#{node[:solr][:version]}/solr-#{node[:solr][:version]}.tgz"
-default.solr.user		= node[:jetty][:user]
-default.solr.group		= node[:jetty][:group]
-default.solr.home 		= '/usr/share/solr'
-default.solr.lib		= '/var/lib/solr'
-default.solr.log_dir	= '/var/log/solr'
+	core_name = params[:name]
 
-default.solr_archive 	= "#{Chef::Config[:file_cache_path]}/apache-solr-#{node[:solr][:version]}.tgz"
-default.extract_path 	= "#{Chef::Config[:file_cache_path]}/apache-solr-#{node[:solr][:version]}"
+	include_recipe "solr"
 
-default.solr.mysql_connector_enable = true
+	bash "create_core_dir" do
+		user "root"
+		code <<-EOH
+			mkdir -p #{node[:solr][:home]}/#{core_name}
+			mkdir -p #{node[:solr][:lib_dir]}/#{core_name}/data
+			cp -R #{node[:solr][:extract_path]}/example/solr/collection1/conf #{node[:solr][:home]}/#{core_name}
+			chown -R #{node[:solr][:user]}:#{node[:solr][:group]} #{node[:solr][:lib_dir]}
+			chown -R #{node[:solr][:user]}:#{node[:solr][:group]} #{node[:solr][:home]}
+			EOH
+		notifies :reload, resources(:service => 'jetty'), :delayed
+	end
 
-# defines OS default packages
-default.packages		= %w(unzip)
-
-# defines jetty options default
-default.jetty.port			= 8000
-default.jetty.java_options 	= "-Dsolr.solr.home=#{node[:solr][:home]} -Xmx256m -Djava.awt.headless=true $JAVA_OPTIONS"
-default.jetty.java_home 	= "/usr/lib/jvm/java-7-openjdk-amd64"
+	template "#{node[:solr][:home]}/solr.xml" do
+		source "solr_xml.erb"
+		user node[:solr][:user]
+		group node[:solr][:group]
+		mode 0755
+		variables({
+			:node_name => core_name	
+		})
+		notifies :reload, resources(:service => 'jetty'), :delayed
+	end
+end

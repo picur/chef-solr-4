@@ -32,10 +32,7 @@ node[:packages].each do |pkg|
 end
 
 # download solr source
-solr_archive = "#{Chef::Config[:file_cache_path]}/apache-solr-#{node[:solr][:version]}.tgz"
-extract_path = "#{Chef::Config[:file_cache_path]}/apache-solr-#{node[:solr][:version]}"
-
-remote_file solr_archive do
+remote_file node[:solr][:solr_archive] do
 	source node[:solr][:source]
 	mode "0744"
 	not_if { ::File.directory?(node[:solr][:home]) }
@@ -43,10 +40,10 @@ end
 
 # extract solr archive
 execute 'extract_solr_archive' do
-	cwd ::File.dirname(solr_archive)
-	command "tar -xzvf #{solr_archive}"
-	not_if { ::File.exists?(extract_path) }
-	only_if { ::File.exists?(solr_archive) }
+	cwd ::File.dirname(node[:solr][:solr_archive])
+	command "tar -xzvf #{node[:solr][:solr_archive]}"
+	not_if { ::File.exists?(node[:solr][:extract_path]) }
+	only_if { ::File.exists?(node[:solr][:solr_archive]) }
 end
 
 # create solr home
@@ -66,8 +63,8 @@ bash "install_solr" do
 	cwd node[:solr][:home]
 	user node[:solr][:user]
 	code <<-EOH
-		unzip #{extract_path}/dist/solr-#{node[:solr][:version]}.war
-		cp -R #{extract_path}/example/lib/ext/* #{node[:jetty][:home]}/lib/ext/
+		unzip #{node[:solr][:extract_path]}/dist/solr-#{node[:solr][:version]}.war
+		cp -R #{node[:solr][:extract_path]}/example/lib/ext/* #{node[:jetty][:home]}/lib/ext/
 		EOH
 end
 
