@@ -40,7 +40,7 @@ default.solr.extract_path 	= "#{Chef::Config[:file_cache_path]}/solr-#{node[:sol
 
 default.solr.mysql_connector_enable = true
 
-# defines jetty options default
-default.jetty.port			= 8000
-default.jetty.java_options 	= "-Dsolr.solr.home=#{node[:solr][:home]} -Xmx256m -Djava.awt.headless=true $JAVA_OPTIONS"
-default.jetty.java_home 	= "/usr/lib/jvm/java-7-openjdk-amd64"
+# overrides jetty options default
+override[:jetty][:port]				= 8000
+override[:jetty][:java_options] 	= "-Dsolr.solr.home=#{node[:solr][:home]} -Xmx256m -Djava.awt.headless=true $JAVA_OPTIONS"
+override[:java][:java_home] 		= "/usr/lib/jvm/java-7-openjdk-amd64"
