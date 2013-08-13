@@ -1,4 +1,4 @@
-name             'chef-solr-4'
+name             'solr'
 maintainer       'Botond Dani'
 maintainer_email 'hi@danibotond.ro'
 license          'MIT'
