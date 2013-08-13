@@ -27,8 +27,8 @@
 include_recipe 'jetty'
 
 # install default packages
-node[:solr][:packages].each do |pkg|
-	package pkg
+package 'unzip' do
+	action :install
 end
 
 # download solr source

@@ -39,9 +39,6 @@ default.solr.extract_path 	= "#{Chef::Config[:file_cache_path]}/apache-solr-#{no
 
 default.solr.mysql_connector_enable = true
 
-# defines OS default packages
-default.solr.packages		= %w(unzip)
-
 # defines jetty options default
 default.jetty.port			= 8000
 default.jetty.java_options 	= "-Dsolr.solr.home=#{node[:solr][:home]} -Xmx256m -Djava.awt.headless=true $JAVA_OPTIONS"
