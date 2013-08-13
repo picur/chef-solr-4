@@ -24,7 +24,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-define :solr_core, :action => :create do
+define :solr_core, :template => "solr_xml.erb" do
 
 	core_name = params[:name]
 
@@ -39,17 +39,22 @@ define :solr_core, :action => :create do
 			chown -R #{node[:solr][:user]}:#{node[:solr][:group]} #{node[:solr][:lib_dir]}
 			chown -R #{node[:solr][:user]}:#{node[:solr][:group]} #{node[:solr][:home]}
 			EOH
-		notifies :reload, resources(:service => 'jetty'), :delayed
 	end
 
 	template "#{node[:solr][:home]}/solr.xml" do
-		source "solr_xml.erb"
+		source params[:template]
 		user node[:solr][:user]
 		group node[:solr][:group]
 		mode 0755
+		if params[:cookbook]
+      		cookbook params[:cookbook]
+    	end
 		variables({
 			:node_name => core_name	
 		})
-		notifies :reload, resources(:service => 'jetty'), :delayed
+
+		if ::File_exists?("#{node[:solr][:home]}/solr.xml")
+			notifies :reload, resources(:service => 'jetty'), :delayed
+		end
 	end
 end
