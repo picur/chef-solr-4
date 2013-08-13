@@ -7,8 +7,10 @@ default.solr.home 		= '/usr/share/solr'
 default.solr.lib		= '/var/lib/solr'
 default.solr.log_dir	= '/var/log/solr'
 
+default.solr.mysql_connector_enable = true
+
 # defines OS default packages
-default.packages		= %w(libmysql-java unzip)
+default.packages		= %w(unzip)
 
 # defines jetty options default
 default.jetty.java_options 	= "-Dsolr.solr.home=#{node[:solr][:home]} -Xmx256m -Djava.awt.headless=true $JAVA_OPTIONS"

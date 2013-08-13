@@ -77,6 +77,12 @@ link "#{node[:jetty][:webapp_dir]}/solr" do
 end
 
 # add mysql connector to solr
+package "libmysql-java" do
+	action :install
+	only_if node[:solr][:mysql_connector_enable]
+end
+
 link "#{node[:solr][:home]}/WEB-INF/lib/mysql-connector-java.jar" do
 	to "/usr/share/java/mysql-connector-java.jar"
+	only_if node[:solr][:mysql_connector_enable]
 end
