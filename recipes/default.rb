@@ -61,9 +61,9 @@ end
 # unzip solr war to home dir
 bash "install_solr" do
 	cwd node[:solr][:home]
-	user node[:solr][:user]
+	user "root"
 	code <<-EOH
-		unzip #{node[:solr][:extract_path]}/dist/solr-#{node[:solr][:version]}.war
+		/usr/bin/unzip #{node[:solr][:extract_path]}/dist/solr-#{node[:solr][:version]}.war
 		cp -R #{node[:solr][:extract_path]}/example/lib/ext/* #{node[:jetty][:home]}/lib/ext/
 		EOH
 end
