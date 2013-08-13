@@ -27,7 +27,7 @@
 
 # defines default solr settings
 default.solr.version 	= '4.4.0'
-default.solr.source 	= "http://mirrors.hostingromania.ro/apache.org/lucene/solr/#{node[:solr][:version]}/solr-#{node[:solr][:version]}.tgz"
+default.solr.source 	= "http://archive.apache.org/dist/lucene/solr/#{node[:solr][:version]}/solr-#{node[:solr][:version]}.tgz"
 default.solr.user		= node[:jetty][:user]
 default.solr.group		= node[:jetty][:group]
 default.solr.home 		= '/usr/share/solr'
