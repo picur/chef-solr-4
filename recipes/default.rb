@@ -105,9 +105,7 @@ node[:solr][:nodes].each do |core_name|
 		variables({
 			:node_name => core_name	
 		})
-		if ::File_exists?("#{node[:solr][:home]}/solr.xml")
-			notifies :reload, resources(:service => 'jetty'), :delayed
-		end
+		notifies :reload, resources(:service => 'jetty'), :delayed
 	end
 
 end
