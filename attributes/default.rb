@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: chef-solr-4
-# Recipe:: default
+# Attributes:: default
 #
 # Copyright 2013, Botond Dani
 #

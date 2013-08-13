@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: chef-solr-4
-# Recipe:: default
+# Definition:: solr_core
 #
 # Copyright 2013, Botond Dani
 #
