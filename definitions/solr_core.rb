@@ -47,14 +47,11 @@ define :solr_core, :template => "solr_xml.erb", :action => :create do
 		group node[:solr][:group]
 		mode 0755
 		if params[:cookbook]
-      		cookbook params[:cookbook]
-    	end
+	      		cookbook params[:cookbook]
+	    	end
 		variables({
 			:node_name => core_name	
 		})
-
-		if ::File_exists?("#{node[:solr][:home]}/solr.xml")
-			notifies :reload, resources(:service => 'jetty'), :delayed
-		end
+		notifies :reload, resources(:service => 'jetty'), :delayed
 	end
 end
