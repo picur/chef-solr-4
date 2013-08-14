@@ -64,7 +64,8 @@ bash "install_solr" do
 	user "root"
 	code <<-EOH
 		/usr/bin/unzip #{node[:solr][:extract_path]}/dist/solr-#{node[:solr][:version]}.war
-		cp -R #{node[:solr][:extract_path]}/example/lib/ext/* #{node[:jetty][:home]}/lib/ext/
+		cp -r #{node[:solr][:extract_path]}/example/lib/ext/* #{node[:jetty][:home]}/lib/ext/
+		cp -r #{node[:solr][:extract_path]}/dist #{node[:solr][:home]}
 		EOH
 end
 
@@ -79,7 +80,7 @@ package "libmysql-java" do
 	only_if { node[:solr][:mysql_connector_enable] }
 end
 
-link "#{node[:solr][:home]}/WEB-INF/lib/mysql-connector-java.jar" do
+link "#{node[:jetty][:home]}/lib/ext/mysql-connector-java.jar" do
 	to "/usr/share/java/mysql-connector-java.jar"
 	only_if { node[:solr][:mysql_connector_enable] }
 end
@@ -92,8 +93,8 @@ node[:solr][:nodes].each do |core_name|
 			mkdir -p #{node[:solr][:home]}/#{core_name}
 			mkdir -p #{node[:solr][:lib_dir]}/#{core_name}/data
 			cp -R #{node[:solr][:extract_path]}/example/solr/collection1/conf #{node[:solr][:home]}/#{core_name}
-			chown -R #{node[:solr][:user]}:#{node[:solr][:group]} #{node[:solr][:lib_dir]}
-			chown -R #{node[:solr][:user]}:#{node[:solr][:group]} #{node[:solr][:home]}
+			chown -r #{node[:solr][:user]}:#{node[:solr][:group]} #{node[:solr][:lib_dir]}
+			chown -r #{node[:solr][:user]}:#{node[:solr][:group]} #{node[:solr][:home]}
 			EOH
 	end
 
