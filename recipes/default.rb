@@ -35,6 +35,7 @@ end
 remote_file node[:solr][:archive] do
 	source node[:solr][:source]
 	mode "0744"
+	action :create_if_missing
 	not_if { ::File.directory?(node[:solr][:home]) }
 end
 
@@ -48,13 +49,16 @@ end
 
 # create solr home
 directory node[:solr][:home] do
-	user node[:solr][:user]
+	owner node[:solr][:user]
+	group node[:solr][:group]
 	mode "0755"
+	not_if { ::File.directory?(node[:solr][:home]) }
 end
 
 # create log dir
 directory node[:solr][:log_dir] do 
-	user node[:solr][:user]	
+	owner node[:solr][:user]	
+	group node[:solr][:group]
 	mode "0755"
 end
 
@@ -63,10 +67,16 @@ bash "install_solr" do
 	cwd node[:solr][:home]
 	user "root"
 	code <<-EOH
-		/usr/bin/unzip #{node[:solr][:extract_path]}/dist/solr-#{node[:solr][:version]}.war
-		cp -r #{node[:solr][:extract_path]}/example/lib/ext/* #{node[:jetty][:home]}/lib/ext/
-		cp -r #{node[:solr][:extract_path]}/dist #{node[:solr][:home]}
+		cp -a #{node[:solr][:extract_path]}/dist/solr-#{node[:solr][:version]}.war #{node[:jetty][:webapp_dir]}
+		cp -a #{node[:solr][:extract_path]}/example/lib/ext/* #{node[:jetty][:home]}/lib/ext/
+		cp -a #{node[:solr][:extract_path]}/{dist,contrib} #{node[:solr][:home]}
 		EOH
+end
+
+template "#{node[:jetty][:webapp_dir]}/solr.xml" do
+	owner node[:solr][:user]
+	group node[:solr][:group]
+	source "solr-jetty-context.xml.erb"
 end
 
 # add solr to jetty
@@ -93,20 +103,27 @@ node[:solr][:nodes].each do |core_name|
 			mkdir -p #{node[:solr][:home]}/#{core_name}
 			mkdir -p #{node[:solr][:lib_dir]}/#{core_name}/data
 			cp -R #{node[:solr][:extract_path]}/example/solr/collection1/conf #{node[:solr][:home]}/#{core_name}
-			chown -r #{node[:solr][:user]}:#{node[:solr][:group]} #{node[:solr][:lib_dir]}
-			chown -r #{node[:solr][:user]}:#{node[:solr][:group]} #{node[:solr][:home]}
+			chown -R #{node[:solr][:user]}:#{node[:solr][:group]} #{node[:solr][:lib_dir]}
+			chown -R #{node[:solr][:user]}:#{node[:solr][:group]} #{node[:solr][:home]}
 			EOH
 	end
 
 	template "#{node[:solr][:home]}/solr.xml" do
 		source "solr_xml.erb"
-		user node[:solr][:user]
+		owner node[:solr][:user]
 		group node[:solr][:group]
 		mode 0755
 		variables({
 			:node_name => core_name	
 		})
 		notifies :restart, resources(:service => 'jetty'), :delayed
+	end
+
+	template "#{node[:solr][:home]}/#{core_name}/conf/solrconfig.xml" do
+		source "solrconfig.xml.erb"
+		owner node[:solr][:user]
+		group node[:solr][:group]
+		mode 0644
 	end
 
 end

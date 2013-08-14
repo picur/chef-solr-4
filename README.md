@@ -1,4 +1,4 @@
-chef-solr-4 Cookbook
+solr Cookbook
 ====================
 TODO: Enter the cookbook description here.
 
@@ -7,18 +7,16 @@ This cookbook makes your favorite breakfast sandwhich.
 
 Requirements
 ------------
-TODO: List your cookbook requirements. Be sure to include any requirements this cookbook has on platforms, libraries, other cookbooks, packages, operating systems, etc.
 
-e.g.
 #### packages
-- `toaster` - chef-solr-4 needs toaster to brown your bagel.
+- `jetty` - depends on jetty package
 
 Attributes
 ----------
 TODO: List you cookbook attributes here.
 
 e.g.
-#### chef-solr-4::default
+#### solr::default
 <table>
   <tr>
     <th>Key</th>
@@ -27,7 +25,7 @@ e.g.
     <th>Default</th>
   </tr>
   <tr>
-    <td><tt>['chef-solr-4']['bacon']</tt></td>
+    <td><tt>['solr']['bacon']</tt></td>
     <td>Boolean</td>
     <td>whether to include bacon</td>
     <td><tt>true</tt></td>
@@ -36,17 +34,17 @@ e.g.
 
 Usage
 -----
-#### chef-solr-4::default
+#### solr::default
 TODO: Write usage instructions for each cookbook.
 
 e.g.
-Just include `chef-solr-4` in your node's `run_list`:
+Just include `solr` in your node's `run_list`:
 
 ```json
 {
   "name":"my_node",
   "run_list": [
-    "recipe[chef-solr-4]"
+    "recipe[solr]"
   ]
 }
 ```
