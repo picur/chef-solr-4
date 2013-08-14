@@ -67,21 +67,22 @@ bash "install_solr" do
 	cwd node[:solr][:home]
 	user "root"
 	code <<-EOH
-		cp -a #{node[:solr][:extract_path]}/dist/solr-#{node[:solr][:version]}.war #{node[:jetty][:webapp_dir]}
+		cp -a #{node[:solr][:extract_path]}/dist/solr-#{node[:solr][:version]}.war #{node[:jetty][:webapp_dir]}/solr.war
 		cp -a #{node[:solr][:extract_path]}/example/lib/ext/* #{node[:jetty][:home]}/lib/ext/
 		cp -a #{node[:solr][:extract_path]}/{dist,contrib} #{node[:solr][:home]}
 		EOH
+end
+
+file "#{node[:jetty][:webapp_dir]}/solr.war" do
+	owner node[:solr][:user]
+	group node[:solr][:group]
+	mode 0755
 end
 
 template "#{node[:jetty][:webapp_dir]}/solr.xml" do
 	owner node[:solr][:user]
 	group node[:solr][:group]
 	source "solr-jetty-context.xml.erb"
-end
-
-# add solr to jetty
-link "#{node[:jetty][:webapp_dir]}/solr" do
-	to node[:solr][:home]
 end
 
 # add mysql connector to solr
