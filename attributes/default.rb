@@ -42,19 +42,15 @@ default['solr']['archive'] 		= "#{Chef::Config[:file_cache_path]}/apache-solr-#{
 default['solr']['extract_path'] = "#{Chef::Config[:file_cache_path]}/solr-#{node['solr']['version']}"
 
 # defines dataimport handler defaults
-default['solr']['dataimport_handler'] = {
-	'enabled' => true,
-	'data_config' => 'data-config.xml',
-}
+default['solr']['dataimport_handler']['enabled'] = true
+default['solr']['dataimport_handler']['data_config'] = 'data-config.xml'
 
 # defines mongo importer defaults
-default['solr']['dataimport_handler']['mongo_importer'] = {
-	'enabled' => true,
-	'version' => '1.0.0',
-	'link' => "https://github.com/downloads/james75/SolrMongoImporter/solr-mongo-importer-#{node['solr']['dataimport_handler']['mongo_importer']['version']}.jar",
-	'java_driver_version' => '2.10.1',
-	'java_driver_link' => "https://github.com/downloads/mongodb/mongo-java-driver/mongo-#{node['solr']['dataimport_handler']['mongo_importer']['java_driver_version']}.jar",
-}
+default['solr']['dataimport_handler']['mongo_importer']['enabled'] = true
+default['solr']['dataimport_handler']['mongo_importer']['version'] = '1.0.0'
+default['solr']['dataimport_handler']['mongo_importer']['link'] = "https://github.com/downloads/james75/SolrMongoImporter/solr-mongo-importer-#{node['solr']['dataimport_handler']['mongo_importer']['version']}.jar"
+default['solr']['dataimport_handler']['mongo_importer']['java_driver_version'] = '2.10.1'
+default['solr']['dataimport_handler']['mongo_importer']['java_driver_link'] = "https://github.com/downloads/mongodb/mongo-java-driver/mongo-#{node['solr']['dataimport_handler']['mongo_importer']['java_driver_version']}.jar"
 
 # overrides jetty options default
 override['jetty']['port']			= 8000
