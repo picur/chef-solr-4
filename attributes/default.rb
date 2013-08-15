@@ -26,24 +26,39 @@
 
 
 # defines default solr settings
-default.solr.version 	= '4.4.0'
-default.solr.source 	= "http://archive.apache.org/dist/lucene/solr/#{node[:solr][:version]}/solr-#{node[:solr][:version]}.tgz"
-default.solr.user		= node[:jetty][:user]
-default.solr.group		= node[:jetty][:group]
-default.solr.home 		= '/usr/share/solr'
-default.solr.lib_dir	= '/var/lib/solr'
-default.solr.log_dir	= '/var/log/solr'
-default.solr.nodes		= ["solr"]
+default['solr']['version'] 	= '4.4.0'
+default['solr']['source'] 	= "http://archive.apache.org/dist/lucene/solr/#{node['solr']['version']}/solr-#{node['solr']['version']}.tgz"
+default['solr']['checksum']	= ''
 
-default.solr.archive 		= "#{Chef::Config[:file_cache_path]}/apache-solr-#{node[:solr][:version]}.tgz"
-default.solr.extract_path 	= "#{Chef::Config[:file_cache_path]}/solr-#{node[:solr][:version]}"
+default['solr']['user']		= node['jetty']['user']
+default['solr']['group']	= node['jetty']['group']
+default['solr']['war']		= 'solr.war'
+default['solr']['home'] 	= '/usr/share/solr'
+default['solr']['lib_dir']	= '/var/lib/solr'
+default['solr']['log_dir']	= '/var/log/solr'
+default['solr']['nodes']	= ["solr"]
 
-default.solr.dataimport_handler.enabled = true
-default.solr.dataimport_handler.data_config = 'data-config.xml'
+default['solr']['archive'] 		= "#{Chef::Config[:file_cache_path]}/apache-solr-#{node['solr']['version']}.tgz"
+default['solr']['extract_path'] = "#{Chef::Config[:file_cache_path]}/solr-#{node['solr']['version']}"
+
+# defines dataimport handler defaults
+default['solr']['dataimport_handler'] = {
+	'enabled' => true,
+	'data_config' => 'data-config.xml',
+}
+
+# defines mongo importer defaults
+default['solr']['dataimport_handler']['mongo_importer'] = {
+	'enabled' => true,
+	'version' => '1.0.0',
+	'link' => "https://github.com/downloads/james75/SolrMongoImporter/solr-mongo-importer-#{node['solr']['dataimport_handler']['mongo_importer']['version']}.jar",
+	'java_driver_version' => '2.10.1',
+	'java_driver_link' => "https://github.com/downloads/mongodb/mongo-java-driver/mongo-#{node['solr']['dataimport_handler']['mongo_importer']['java_driver_version']}.jar",
+}
 
 # overrides jetty options default
-override[:jetty][:port]				= 8000
-override[:jetty][:java_options] 	= "-Dsolr.solr.home=#{node[:solr][:home]} -Xmx256m -Djava.awt.headless=true $JAVA_OPTIONS"
+override['jetty']['port']			= 8000
+override['jetty']['java_options'] 	= "-Dsolr.solr.home=#{node['solr']['home']} -Xmx256m -Djava.awt.headless=true $JAVA_OPTIONS"
 
 # override java defaults
-override[:java][:jdk_version]		= 7
+override['java']['jdk_version']		= 7

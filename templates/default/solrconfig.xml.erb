@@ -84,9 +84,14 @@
   <lib dir="../contrib/velocity/lib" regex=".*\.jar" />
   <lib dir="../dist/" regex="solr-velocity-\d.*\.jar" />
 
-  <% if node[:solr][:dataimport_handler][:enabled] -%>
+  <% if node['solr']['dataimport_handler']['enabled'] -%>
   <lib dir="../contrib/dataimporthandler/lib" regex=".*\.jar" />
   <lib dir="../dist/" regex="solr-dataimporthandler-.*\.jar" />
+  <% end -%>
+
+  <% if node['solr']['dataimport_handler']['mongo_importer']['enabled'] -%>
+  <lib path="../dist/solr-mongo-importer.jar" />
+  <lib path="../dist/mongo.jar" />
   <% end -%>
 
   <!-- an exact 'path' can be used instead of a 'dir' to specify a 
@@ -797,7 +802,7 @@
 
     -->
 
-  <% if node[:solr][:dataimport_handler][:enabled] -%>
+  <% if node['solr']['dataimport_handler']['enabled'] -%>
   <!-- DataImport Handler -->
   <requestHandler name="/dataimport" class="org.apache.solr.handler.dataimport.DataImportHandler">
     <lst name="defaults">
