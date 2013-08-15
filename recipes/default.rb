@@ -88,12 +88,12 @@ end
 # add mysql connector to solr
 package "libmysql-java" do
 	action :install
-	only_if { node[:solr][:mysql_connector_enable] }
+	only_if { node[:solr][:dataimport_handler][:enabled] }
 end
 
 link "#{node[:jetty][:home]}/lib/ext/mysql-connector-java.jar" do
 	to "/usr/share/java/mysql-connector-java.jar"
-	only_if { node[:solr][:mysql_connector_enable] }
+	only_if { node[:solr][:dataimport_handler][:enabled] }
 end
 
 node[:solr][:nodes].each do |core_name|
@@ -125,6 +125,14 @@ node[:solr][:nodes].each do |core_name|
 		owner node[:solr][:user]
 		group node[:solr][:group]
 		mode 0644
+	end
+
+	cookbook_file "#{node[:solr][:home]}/#{core_name}/conf/#{node[:solr][:dataimport_handler][:data_config]}" do
+		source "data-config.xml"
+		owner node[:solr][:user]
+		group node[:solr][:group]
+		mode 0644
+		only_if { node[:solr][:dataimport_handler][:enabled] }
 	end
 
 end

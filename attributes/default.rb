@@ -38,7 +38,8 @@ default.solr.nodes		= ["solr"]
 default.solr.archive 		= "#{Chef::Config[:file_cache_path]}/apache-solr-#{node[:solr][:version]}.tgz"
 default.solr.extract_path 	= "#{Chef::Config[:file_cache_path]}/solr-#{node[:solr][:version]}"
 
-default.solr.mysql_connector_enable = true
+default.solr.dataimport_handler.enabled = true
+default.solr.dataimport_handler.data_config = 'data-config.xml'
 
 # overrides jetty options default
 override[:jetty][:port]				= 8000

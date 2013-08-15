@@ -84,8 +84,10 @@
   <lib dir="../contrib/velocity/lib" regex=".*\.jar" />
   <lib dir="../dist/" regex="solr-velocity-\d.*\.jar" />
 
+  <% if node[:solr][:dataimport_handler][:enabled] -%>
   <lib dir="../contrib/dataimporthandler/lib" regex=".*\.jar" />
-  <lib dir="../dist/" regex="apache-solr-dataimporthandler-.*\.jar" />
+  <lib dir="../dist/" regex="solr-dataimporthandler-.*\.jar" />
+  <% end -%>
 
   <!-- an exact 'path' can be used instead of a 'dir' to specify a 
        specific jar file.  This will cause a serious error to be logged 
@@ -795,11 +797,14 @@
 
     -->
 
+  <% if node[:solr][:dataimport_handler][:enabled] -%>
+  <!-- DataImport Handler -->
   <requestHandler name="/dataimport" class="org.apache.solr.handler.dataimport.DataImportHandler">
     <lst name="defaults">
       <str name="config">data-config.xml</str>
     </lst>
   </requestHandler>
+  <% end -%>
   <!-- SearchHandler
 
        http://wiki.apache.org/solr/SearchHandler
