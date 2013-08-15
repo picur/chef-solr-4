@@ -76,7 +76,7 @@ bash "install_solr" do
 		EOH
 end
 
-file File.join(ode['jetty']['webapp_dir'], node['solr']['war']) do
+file File.join(node['jetty']['webapp_dir'], node['solr']['war']) do
 	owner node['solr']['user']
 	group node['solr']['group']
 	mode  0755
