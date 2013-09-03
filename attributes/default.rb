@@ -53,8 +53,8 @@ default['solr']['dataimport_handler']['mongo_importer']['java_driver_version'] =
 default['solr']['dataimport_handler']['mongo_importer']['java_driver_link'] = "https://github.com/downloads/mongodb/mongo-java-driver/mongo-#{node['solr']['dataimport_handler']['mongo_importer']['java_driver_version']}.jar"
 
 # overrides jetty options default
-override['jetty']['port']			= 8000
-override['jetty']['java_options'] 	= "-Dsolr.solr.home=#{node['solr']['home']} -Xmx256m -Djava.awt.headless=true $JAVA_OPTIONS"
+default['jetty']['port']			= 8000
+default['jetty']['java_options'] 	= "-Dsolr.solr.home=#{node['solr']['home']} -Xmx256m -Djava.awt.headless=true $JAVA_OPTIONS"
 
 # override java defaults
-override['java']['jdk_version']		= 7
+default['java']['jdk_version']		= 7
