@@ -37,8 +37,6 @@ remote_file node['solr']['archive'] do
 	checksum node['solr']['checksum']
 	mode     0744
 	action   :create_if_missing
-
-	not_if { ::File.directory?(node['solr']['home']) }
 end
 
 # extract solr archive
